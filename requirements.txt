@@ -1,0 +1,12 @@
+streamlit
+snowflake-connector-python
+pandas
+seaborn
+matplotlib
+python-dotenv
+snowflake-snowpak-python
+trnasformers
+tensorflow
+pip install --upgrade transformers torch tensorflow
+pip uninstall tensorflow
+pip install torch

@@ -1,0 +1,127 @@
+name: MTACHING_PATTERN_SQL_GENERATION_MODEL
+tables:
+  - name: INPUT_RECORDS
+    description: 'Table containing the user input details for the SQL generation model'
+    base_table:
+      database: LLM_DB
+      schema: LLM_DEV
+      table: INPUT_RECORDS
+    dimensions:
+      - name: ORDER_ID
+        synonyms:
+          - 'ID'
+        description: 'unique identifier for the record'
+        expr: ID
+        data_type: NUMBER
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+      - name: FIRSTNAME
+        synonyms:
+          - 'FIRSTNAME'
+          - 'fname'
+          - 'First Name'
+        description: 'First name of the member'
+        expr: FIRSTNAME
+        data_type: TEXT
+        sample_values:
+          - 'Ameeya'
+          - 'Ameya K'
+          - 'Murali'
+          - 'Murali prasad'
+      - name: LASTNAME
+        synonyms:
+          - 'LASTNAME'
+          - 'lname'
+          - 'surname'
+        description: 'Last name of the member'
+        expr: LASTNAME
+        data_type: TEXT
+        sample_values:
+          - 'Dwivedi'
+          - 'M KULKARNI'
+          - 'David Smith'
+      - name: ADDRESS
+        synonyms:
+          - 'address'
+          - 'addr'
+          - 'Place'
+          - 'Location'
+          - 'city'
+        description: 'Primary city for the member'
+        expr: ADDRESS
+        data_type: TEXT
+        sample_values:
+          - 'Bangalore'
+          - 'Chennai'
+          - 'Alexandria'
+          - 'Richmond'
+      - name: DOB
+        synonyms:
+          - 'Birthdate'
+          - 'Date of birth'
+          - 'dob'
+        description: 'Date of birth for the member'
+        expr: DOB
+        data_type: TEXT
+        sample_values:
+          - '20120708'
+          - '19830708'
+          - '19650606'
+      - name: GENDER
+        synonyms:
+          - 'sex' 
+        description: 'member gender'
+        expr: GENDER
+        data_type: TEXT
+        sample_values:
+          - Male
+          - None
+          - Undisclosed
+          - Female
+          - Male
+          - F
+          - M
+          - N/A
+          - null
+      - name: COUNTRY
+        synonyms:
+          - 'Country'
+          - 'member country'
+        description: 'Country where the member belongs'
+        expr: COUNTRY
+        data_type: TEXT
+        sample_values:
+          - USA
+          - Canada
+          - INDIA
+          - Spain
+          - Japan
+          - United States
+      - name: FIRSTNAME_VECTOR
+        synonyms:
+          - 'FIRSTNAME_VECTOR'
+        description: 'Embedding vector for the first name'
+        expr: FIRSTNAME_VECTOR
+        data_type: VECTOR
+        sample_values:
+          - [0.1, 0.2, 0.3, 0.4]
+      - name: LASTNAME_VECTOR
+        synonyms:
+          - 'LASTNAME_VECTOR'
+        description: 'Embedding vector for the LAST name'
+        expr: LASTNAME_VECTOR
+        data_type: VECTOR
+        sample_values:
+          - [0.1, 0.2, 0.3, 0.4]      
+      - name: ADDRESS_VECTOR
+        synonyms:
+          - 'ADDRESS_VECTOR'
+        description: 'Embedding vector for the ADDRESS'
+        expr: ADDRESS_VECTOR
+        data_type: VECTOR
+        sample_values:
+          - [0.1, 0.2, 0.3, 0.4]      
+

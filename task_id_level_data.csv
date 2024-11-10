@@ -1,0 +1,2 @@
+﻿,task_id,group,Match Type,total_score
+0,111,"2,4",hc-firstname+hc-lastname | Exact DOB+gender,2.9712330102920532

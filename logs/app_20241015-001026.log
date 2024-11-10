@@ -1,0 +1,70 @@
+2024-10-15 00:10:26,732 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241015-001026.log
+2024-10-15 00:10:33,231 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241015-001033.log
+2024-10-15 00:10:34,229 INFO snowflake.connector.connection ScriptRunner.scriptThread : Snowflake Connector for Python Version: 3.12.2, Python Version: 3.9.12, Platform: Windows-10-10.0.22631-SP0
+2024-10-15 00:10:34,241 INFO snowflake.connector.connection ScriptRunner.scriptThread : Connecting to GLOBAL Snowflake domain
+2024-10-15 00:10:34,242 INFO snowflake.connector.connection ScriptRunner.scriptThread : This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2024-10-15 00:10:38,265 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241015-001038.log
+2024-10-15 00:10:39,017 INFO snowflake.connector.connection ScriptRunner.scriptThread : Snowflake Connector for Python Version: 3.12.2, Python Version: 3.9.12, Platform: Windows-10-10.0.22631-SP0
+2024-10-15 00:10:39,017 INFO snowflake.connector.connection ScriptRunner.scriptThread : Connecting to GLOBAL Snowflake domain
+2024-10-15 00:10:39,020 INFO snowflake.connector.connection ScriptRunner.scriptThread : This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2024-10-15 00:10:39,977 ERROR root ScriptRunner.scriptThread : Error uploading data to Snowflake: 'NoneType' object has no attribute 'cursor'
+2024-10-15 00:10:39,977 ERROR root ScriptRunner.scriptThread : Error adding embeddings to table: 'NoneType' object has no attribute 'cursor'
+2024-10-15 00:10:39,977 ERROR root ScriptRunner.scriptThread : Error adding embeddings to table: 'NoneType' object has no attribute 'cursor'
+2024-10-15 00:10:39,977 INFO root ScriptRunner.scriptThread : Matching Rules Query: 
+        WITH VECTOR_DATA AS (
+        SELECT
+            id,
+            task_id,
+            firstname,
+            lastname,
+            dob,
+            GENDER,
+            COUNTRY,
+            firstname_vector,
+            lastname_vector,
+            address_vector
+        FROM INPUT_RECORDS
+        )
+        SELECT
+                a.task_id as task_id,
+                A.id AS id_a,
+                B.id AS id_b,
+                A.DOB as dob_a,
+                B.DOB as dob_b,
+                A.GENDER as gender_a,
+                B.GENDER as gender_b,
+                A.firstname as firstname_a,
+                B.firstname as firstname_b,
+                A.lastname as lastname_a,
+                B.lastname as lastname_b,
+                A.firstname || ' ' || A.lastname || ' ' || A.DOB || ' ' || A.Gender || ' ' || A.COUNTRY AS first_record,
+                B.firstname || ' ' || B.lastname || ' ' || B.DOB || ' ' || B.Gender || ' ' || B.COUNTRY AS second_record,
+                CASE
+                WHEN A.FIRSTNAME = B.FIRSTNAME
+                    AND A.LASTNAME = B.LASTNAME
+                    AND COALESCE(A.DOB,'11110101') = COALESCE(B.DOB,'11110101')
+                    AND COALESCE(A.GENDER,'UNK') = COALESCE(B.GENDER,'UNK')
+                THEN 'Exact firstname+lastname+dob+gender'
+                when VECTOR_COSINE_SIMILARITY(A.firstname_vector,B.firstname_vector) > 0.95
+                    AND VECTOR_COSINE_SIMILARITY(A.lastname_vector,B.lastname_vector) > 0.95
+                    AND COALESCE(A.DOB,'11110101') = COALESCE(B.DOB,'11110101')
+                    AND COALESCE(A.GENDER,'UNK') = COALESCE(B.GENDER,'UNK')
+                THEN 'hc-firstname+hc-lastname | Exact DOB+gender'
+                WHEN VECTOR_COSINE_SIMILARITY(A.ADDRESS_VECTOR, B.ADDRESS_VECTOR) > 0.9
+                    AND VECTOR_COSINE_SIMILARITY(A.firstname_vector,B.firstname_vector) > 0.9
+                    AND VECTOR_COSINE_SIMILARITY(A.lastname_vector,B.lastname_vector) > 0.9
+                    AND COALESCE(A.DOB,'11110101') = COALESCE(B.DOB,'11110101')
+                THEN 'lc firstname+lastname + hc-address  | Exact DOB+gender'
+                WHEN EDITDISTANCE(A.LASTNAME, B.LASTNAME) < 3 
+                THEN 'Fuzzy Match on Lastname'
+                ELSE 'No Match'
+                END AS MATCH_TYPE,
+                VECTOR_COSINE_SIMILARITY(A.firstname_vector,B.firstname_vector) as fn_similarity_score,
+                VECTOR_COSINE_SIMILARITY(A.lastname_vector,B.lastname_vector) as ln_similarity_score,
+                VECTOR_COSINE_SIMILARITY(A.ADDRESS_VECTOR, B.ADDRESS_VECTOR) as adrs_similarity_score
+            FROM VECTOR_DATA A
+            JOIN VECTOR_DATA B ON A.id < B.id
+            and A.task_id = B.task_id;
+            
+2024-10-15 00:10:39,977 ERROR root ScriptRunner.scriptThread : Error applying matching rules: 'NoneType' object has no attribute 'cursor'
+2024-10-15 00:10:39,990 ERROR root ScriptRunner.scriptThread : Error fetching original data: 'NoneType' object has no attribute 'cursor'

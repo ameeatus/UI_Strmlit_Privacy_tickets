@@ -1,0 +1,11 @@
+﻿,task_id,id_a,id_b,dob_a,dob_b,gender_a,gender_b,firstname_a,firstname_b,lastname_a,lastname_b,First Record,Second Record,Match Type,fn_similarity_score,ln_similarity_score,adrs_similarity_score
+0,111,1,2,20120708,20120708,M,M,Samar,Sagar,Dwivedi,Dwivedi,Samar Dwivedi 20120708 M India,Sagar Dwivedi 20120708 M India,lc firstname+lastname + hc-address  | Exact DOB+gender,0.905276304168923,1,1
+1,111,1,3,20120708,20120708,M,M,Samar,Sagar K ,Dwivedi,Dwivedi,Samar Dwivedi 20120708 M India,Sagar K  Dwivedi 20120708 M India,Fuzzy Match on Lastname,0.8945518198876504,1,1
+2,111,1,4,20120708,20120708,M,M,Samar,Sagar Kumar,Dwivedi,Dwivedi,Samar Dwivedi 20120708 M India,Sagar Kumar Dwivedi 20120708 M India,Fuzzy Match on Lastname,0.8715728674444119,1,1
+3,111,2,3,20120708,20120708,M,M,Sagar,Sagar K ,Dwivedi,Dwivedi,Sagar Dwivedi 20120708 M India,Sagar K  Dwivedi 20120708 M India,hc-firstname+hc-lastname | Exact DOB+gender,0.9712330102920532,1,1
+4,111,2,4,20120708,20120708,M,M,Sagar,Sagar Kumar,Dwivedi,Dwivedi,Sagar Dwivedi 20120708 M India,Sagar Kumar Dwivedi 20120708 M India,lc firstname+lastname + hc-address  | Exact DOB+gender,0.9499391943252584,1,1
+5,111,3,4,20120708,20120708,M,M,Sagar K ,Sagar Kumar,Dwivedi,Dwivedi,Sagar K  Dwivedi 20120708 M India,Sagar Kumar Dwivedi 20120708 M India,hc-firstname+hc-lastname | Exact DOB+gender,0.9597346210637931,1,1
+6,222,5,6,19830708,19830708,M,M,Swarup,Swarup,Tripathy,M Tripathy,Swarup Tripathy 19830708 M India,Swarup M Tripathy 19830708 M India,hc-firstname+hc-lastname | Exact DOB+gender,1,0.9749746352464465,1
+7,222,5,7,19830708,19830708,M,M,Swarup,Swaraj,Tripathy,Tripathy,Swarup Tripathy 19830708 M India,Swaraj Tripathy 19830708 M India,Fuzzy Match on Lastname,0.8891728057224795,1,1
+8,222,6,7,19830708,19830708,M,M,Swarup,Swaraj,M Tripathy,Tripathy,Swarup M Tripathy 19830708 M India,Swaraj Tripathy 19830708 M India,Fuzzy Match on Lastname,0.8891728057224795,0.9749746352464465,1
+9,333,8,9,19650606,19650606,F,F,Sriya ,Sriya ,M Prasad,Murali Prasad,Sriya  M Prasad 19650606 F India,Sriya  Murali Prasad 19650606 F India,lc firstname+lastname + hc-address  | Exact DOB+gender,1,0.9285170478512633,0.9146560532264646

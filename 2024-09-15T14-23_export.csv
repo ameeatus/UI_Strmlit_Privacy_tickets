@@ -1,0 +1,13 @@
+﻿,ID,First Record,Match Type,similarity_score_fn_ln_adrs
+0,1,Sagar Dwivedi 20120708 M India,No Match,0.9144630432|0.9085551555|1
+1,2,Swarup Tripathy 19830708 M India,No Match,0.9144630432|0.9085551555|1
+2,3,Sagar K  Dwivedi 20120708 M India,No Match,0.9713134187|1|1
+3,4,Swarup M Tripathy 19830708 M India,No Match,0.9144630432|0.9038695808|1
+4,5,Sriya  M Prasad 19650606 F India,No Match,0.9007021189|0.9088282152|0.9182394792
+5,6,Sriya  Murali Prasad 19650606 F India,No Match,0.9007021189|0.8814603494|0.9141646079
+6,1,Sagar Dwivedi 20120708 M India,hc-firstname+lc-lastname | Exact DOB+gender,0.9144630432|0.9085551555|1
+7,2,Swarup Tripathy 19830708 M India,hc-firstname+lc-lastname | Exact DOB+gender,0.9144630432|0.9085551555|1
+8,3,Sagar K  Dwivedi 20120708 M India,hc-firstname+lc-lastname | Exact DOB+gender,0.9713134187|1|1
+9,4,Swarup M Tripathy 19830708 M India,hc-firstname+lc-lastname | Exact DOB+gender,0.9144630432|0.9038695808|1
+10,5,Sriya  M Prasad 19650606 F India,lc firstname+lastname + hc-address  | Exact DOB+gender,0.9007021189|0.9088282152|0.9182394792
+11,6,Sriya  Murali Prasad 19650606 F India,lc firstname+lastname + hc-address  | Exact DOB+gender,0.9007021189|0.8814603494|0.9141646079

@@ -1,0 +1,103 @@
+2024-10-22 13:04:10,195 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241022-130410.log
+2024-10-22 13:04:19,821 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241022-130419.log
+2024-10-22 13:04:20,236 INFO snowflake.connector.connection ScriptRunner.scriptThread : Snowflake Connector for Python Version: 3.12.2, Python Version: 3.9.12, Platform: Windows-10-10.0.22631-SP0
+2024-10-22 13:04:20,236 INFO snowflake.connector.connection ScriptRunner.scriptThread : Connecting to GLOBAL Snowflake domain
+2024-10-22 13:04:20,237 INFO snowflake.connector.connection ScriptRunner.scriptThread : This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2024-10-22 13:04:22,074 INFO snowflake.connector.connection ScriptRunner.scriptThread : closed
+2024-10-22 13:04:22,213 INFO snowflake.connector.connection ScriptRunner.scriptThread : No async queries seem to be running, deleting session
+2024-10-22 13:04:23,248 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241022-130423.log
+2024-10-22 13:04:23,687 INFO snowflake.connector.connection ScriptRunner.scriptThread : Snowflake Connector for Python Version: 3.12.2, Python Version: 3.9.12, Platform: Windows-10-10.0.22631-SP0
+2024-10-22 13:04:23,687 INFO snowflake.connector.connection ScriptRunner.scriptThread : Connecting to GLOBAL Snowflake domain
+2024-10-22 13:04:23,687 INFO snowflake.connector.connection ScriptRunner.scriptThread : This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2024-10-22 13:04:24,651 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 1
+2024-10-22 13:04:26,708 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 1
+2024-10-22 13:04:27,717 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 8
+2024-10-22 13:04:27,837 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 1
+2024-10-22 13:04:28,301 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 1
+2024-10-22 13:04:29,691 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 1
+2024-10-22 13:04:29,693 INFO root ScriptRunner.scriptThread : Successfully uploaded 9 rows to 'INPUT_RECORDS' table in Snowflake.
+2024-10-22 13:04:30,820 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 3
+2024-10-22 13:04:30,820 INFO root ScriptRunner.scriptThread : Column - {column_name}  already exist in the table.
+2024-10-22 13:04:30,820 INFO root ScriptRunner.scriptThread : Column - {column_name}  already exist in the table.
+2024-10-22 13:04:30,821 INFO root ScriptRunner.scriptThread : Column - {column_name}  already exist in the table.
+2024-10-22 13:04:30,821 INFO root ScriptRunner.scriptThread : Update Query: 
+        UPDATE INPUT_RECORDS
+        SET
+            firstname_vector = SNOWFLAKE.CORTEX.EMBED_TEXT_768('snowflake-arctic-embed-m', firstname),
+            lastname_vector = SNOWFLAKE.CORTEX.EMBED_TEXT_768('snowflake-arctic-embed-m', lastname),
+            address_vector = SNOWFLAKE.CORTEX.EMBED_TEXT_768('snowflake-arctic-embed-m',address);
+        
+2024-10-22 13:04:31,501 INFO root ScriptRunner.scriptThread : Embeddings calculated and stored back in 'INPUT_RECORDS' table.
+2024-10-22 13:04:31,501 INFO root ScriptRunner.scriptThread : Matching Rules Query: 
+        WITH VECTOR_DATA AS (
+        SELECT
+            id,
+            task_id,
+            firstname,
+            lastname,
+            dob,
+            GENDER,
+            COUNTRY,
+            firstname_vector,
+            lastname_vector,
+            address_vector
+        FROM INPUT_RECORDS
+        )
+        SELECT
+                a.task_id as task_id,
+                A.id AS id_a,
+                B.id AS id_b,
+                A.DOB as dob_a,
+                B.DOB as dob_b,
+                A.GENDER as gender_a,
+                B.GENDER as gender_b,
+                A.firstname as firstname_a,
+                B.firstname as firstname_b,
+                A.lastname as lastname_a,
+                B.lastname as lastname_b,
+                A.firstname || ' ' || A.lastname || ' ' || A.DOB || ' ' || A.Gender || ' ' || A.COUNTRY AS first_record,
+                B.firstname || ' ' || B.lastname || ' ' || B.DOB || ' ' || B.Gender || ' ' || B.COUNTRY AS second_record,
+                CASE
+                WHEN A.FIRSTNAME = B.FIRSTNAME
+                    AND A.LASTNAME = B.LASTNAME
+                    AND COALESCE(A.DOB,'11110101') = COALESCE(B.DOB,'11110101')
+                    AND COALESCE(A.GENDER,'UNK') = COALESCE(B.GENDER,'UNK')
+                THEN 'Exact firstname+lastname+dob+gender'
+                when VECTOR_COSINE_SIMILARITY(A.firstname_vector,B.firstname_vector) > 0.95
+                    AND VECTOR_COSINE_SIMILARITY(A.lastname_vector,B.lastname_vector) > 0.95
+                    AND COALESCE(A.DOB,'11110101') = COALESCE(B.DOB,'11110101')
+                    AND COALESCE(A.GENDER,'UNK') = COALESCE(B.GENDER,'UNK')
+                THEN 'hc-firstname+hc-lastname | Exact DOB+gender'
+                WHEN VECTOR_COSINE_SIMILARITY(A.ADDRESS_VECTOR, B.ADDRESS_VECTOR) > 0.9
+                    AND VECTOR_COSINE_SIMILARITY(A.firstname_vector,B.firstname_vector) > 0.9
+                    AND VECTOR_COSINE_SIMILARITY(A.lastname_vector,B.lastname_vector) > 0.9
+                    AND COALESCE(A.DOB,'11110101') = COALESCE(B.DOB,'11110101')
+                THEN 'lc firstname+lastname + hc-address  | Exact DOB+gender'
+                WHEN EDITDISTANCE(A.LASTNAME, B.LASTNAME) < 3 
+                THEN 'Fuzzy Match on Lastname'
+                ELSE 'No Match'
+                END AS MATCH_TYPE,
+                VECTOR_COSINE_SIMILARITY(A.firstname_vector,B.firstname_vector) as fn_similarity_score,
+                VECTOR_COSINE_SIMILARITY(A.lastname_vector,B.lastname_vector) as ln_similarity_score,
+                VECTOR_COSINE_SIMILARITY(A.ADDRESS_VECTOR, B.ADDRESS_VECTOR) as adrs_similarity_score
+            FROM VECTOR_DATA A
+            JOIN VECTOR_DATA B ON A.id < B.id
+            and A.task_id = B.task_id;
+            
+2024-10-22 13:04:33,168 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 10
+2024-10-22 13:04:33,414 INFO snowflake.connector.cursor ScriptRunner.scriptThread : Number of results in first chunk: 9
+2024-10-22 13:04:33,443 INFO root ScriptRunner.scriptThread : Records grouped successfully
+2024-10-22 13:04:34,541 INFO snowflake.connector.connection ScriptRunner.scriptThread : closed
+2024-10-22 13:04:34,624 INFO snowflake.connector.connection ScriptRunner.scriptThread : No async queries seem to be running, deleting session
+2024-10-22 13:13:02,472 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241022-131302.log
+2024-10-22 13:13:03,072 INFO snowflake.connector.connection ScriptRunner.scriptThread : Snowflake Connector for Python Version: 3.12.2, Python Version: 3.9.12, Platform: Windows-10-10.0.22631-SP0
+2024-10-22 13:13:03,074 INFO snowflake.connector.connection ScriptRunner.scriptThread : Connecting to GLOBAL Snowflake domain
+2024-10-22 13:13:03,074 INFO snowflake.connector.connection ScriptRunner.scriptThread : This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2024-10-22 13:13:04,353 INFO snowflake.connector.connection ScriptRunner.scriptThread : closed
+2024-10-22 13:13:04,434 INFO snowflake.connector.connection ScriptRunner.scriptThread : No async queries seem to be running, deleting session
+2024-10-22 13:14:05,753 INFO root ScriptRunner.scriptThread : Log file created: C:\Users\5J4224897\Projects\UI_Strmlit_Privacy_tickets\logs/app_20241022-131405.log
+2024-10-22 13:14:06,243 INFO snowflake.connector.connection ScriptRunner.scriptThread : Snowflake Connector for Python Version: 3.12.2, Python Version: 3.9.12, Platform: Windows-10-10.0.22631-SP0
+2024-10-22 13:14:06,244 INFO snowflake.connector.connection ScriptRunner.scriptThread : Connecting to GLOBAL Snowflake domain
+2024-10-22 13:14:06,244 INFO snowflake.connector.connection ScriptRunner.scriptThread : This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2024-10-22 13:14:07,187 INFO snowflake.connector.connection ScriptRunner.scriptThread : closed
+2024-10-22 13:14:07,253 INFO snowflake.connector.connection ScriptRunner.scriptThread : No async queries seem to be running, deleting session
