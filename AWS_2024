@@ -1,0 +1,111 @@
+eksctl delete cluster -f ./cluster-config.yaml
+
+set CLUSTER_VPC=$(aws eks describe-cluster --name web-quickstart --region $CLUSTER_REGION --query "cluster.resourcesVpcConfig.vpcId" --output text)
+set CLUSTER_REGION=us-east-1
+
+$CLUSTER_VPC = $(aws eks describe-cluster --name web-quickstart --region us-east-1 --query "cluster.resourcesVpcConfig.vpcId" --output text)
+
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update eks
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller `
+    --namespace kube-system `
+    --set clusterName=web-quickstart `
+    --set serviceAccount.create=false `
+    --set region=$env:CLUSTER_REGION `
+    --set vpcId=$env:CLUSTER_VPC `
+    --set serviceAccount.name=aws-load-balancer-controller
+
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/master/examples/kubernetes/dynamic-provisioning/manifests/storageclass.yaml
+
+2024-10-29 18:25:20 [!]  IRSA has been deprecated; the recommended way to provide IAM permissions for "aws-ebs-csi-driver" addon is via pod identity 
+
+associations; after addon creation is completed, run `eksctl utils migrate-to-pod-identity` 
+
+kubectl apply -n game-2048 -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.8.0/docs/examples/2048/2048_full.yaml
+
+/*************************/
+IAM user:
+smitaAtus , Smita@12345
+access key:QBX4FuiXgUGVxLV67wuAB4SuAQh1z3IbgYyjg7jF
+Secret accesskey Access key :QBX4FuiXgUGVxLV67wuAB4SuAQh1z3IbgYyjg7jF
+https://637423198268.signin.aws.amazon.com/console
+
+pgsql : end point : 
+pgsqlak.cvuomwmswmhl.us-east-1.rds.amazonaws.com
+T7lhbps4Z?yZ!cSg8|}<)TkRbTr$
+masterusername: pguser
+Password : Secrets manager
+
+roort :  khadangasmitaatus@gmail.com
+
+Sagemaker Executin roile:
+User profile ID : default-20240830T233064
+d-9d1pzwv6o7kb
+arn:aws:iam::637423198268:role/service-role/AmazonSageMaker-ExecutionRole-20240830T233064
+
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423198268.dkr.ecr.us-east-1.amazonaws.com
+docker tag api-vector-search:latest 637423198268.dkr.ecr.us-east-1.amazonaws.com/api-vector-search:latest
+docker push /home/cloudshell-user/.docker/config.json 637423198268.dkr.ecr.us-east-1.amazonaws.com/api-vector-search:latest
+
+(Get-ECRLoginCommand).Password | docker login --username AWS --password-stdin 637423198268.dkr.ecr.us-east-1.amazonaws.com
+
+docker pull 637423198268.dkr.ecr.us-east-1.amazonaws.com/prsnl_img/api-vector-search:latest
+637423198268.dkr.ecr.us-east-1.amazonaws.com/prsnl_img
+
+/***********************************************************************************/
+/***********************************SNOWFLAKE***********************/
+/***********************************************************************************/
+
+/******************Oct 13 2024: SF account created ********/
+
+ameeatus
+Vedu@geli2024
+https://qmcxdvj-qhb55788.snowflakecomputing.com
+
+/*********************sep 6th 2024 Snowflake ******************/
+SF accounbt created:
+ameeya.khadanga@ibm.com
+https://wruhzqv-lvb11625.snowflakecomputing.com/console/login
+https://wruhzqv-lvb11625.snowflakecomputing.com
+ameeatus
+Smita@12345
+
+Project1:https://quickstarts.snowflake.com/guide/asking_questions_to_your_own_documents_with_snowflake_cortex/index.html#0
+
+
+
+/*********************15Jan 2024 Snowflake Not using  ******************/
+snowflake account:(created 15-jan)
+https://hbtkozr-wtb96327.snowflakecomputing.com/console/login#/
+
+user : smitaatus
+Pwd: Smita@12345
+
+
+https://yourlearning.ibm.com/activity/PLAN-C0FA1E76406E
+Generative AI for AWS - Architect - Foundation
+https://yourlearning.ibm.com/activity/URL-C93DB64ECFA9
+
+mastering Amazon sagemaker - partner learning plan
+https://yourlearning.ibm.com/activity/URL-50C20F23B395
+
+/***********************************************************************************/
+1. Edit snowlake tables using Stream_lit data_editor()
+https://medium.com/@nirvana_whip_mammoth_891/edit-snowflake-tables-with-a-grid-ui-using-streamlit-data-editor-in-streamlit-in-snowflake-c1d58c2f8ce0
+
+2. cotex analyst - sql generation from text
+https://github.com/Snowflake-Labs/sf-samples/tree/main/samples/cortex-analyst/Cortex%20Analyst%20Tasty%20Bytes
+2.snowfl;ake textto sql model
+
+https://medium.com/snowflake/snowflake-text-to-sql-magic-dcae2ebc5a82
+
+
+3. Various distances like l1, l2, jackard, hamming etc in pgsql 
+
+https://neon.tech/docs/extensions/pgvector
+
+
+
